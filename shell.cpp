@@ -4,6 +4,8 @@
 bool REPL = 1;
 
 
+
+
 int main()
 {
     std::string command;
@@ -12,6 +14,7 @@ int main()
         std::cout <<"$ ";
         std::cin >> command;
 
+        std::cout << command <<" : command not found\n";
     }
     
 
