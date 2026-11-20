@@ -55,7 +55,52 @@ void type(std::string command)
     unknown_command(cmd);
 }
 
-void exec_cmd()
+void exec_cmd(const std::string&command) {
+    std::vector<std::string> args;
+    std::string arg;
+    for (char c : command){
+        if(c==' '){
+            if(!arg.empty()) {
+                args.push_back(arg);
+                arg.clear();
+            }
+        } else {
+            arg += c;
+        }
+    }
+
+    if (!arg.empty()) {
+        args.push_back(arg);
+    }
+    if (args.empty()) {
+        return;
+    }
+
+    std::string executable = args[0];
+    std::string full_path = find_in_path(executable);
+
+    if(full_path.empty()){
+        unknown_command(executable);
+        return;
+    }
+
+    std::vector<char*> c_args;
+    for (auto& a : args) c_args.push_back(const_cast<char*>(a.c_str()));
+    c_args.push_back(nullptr);
+
+    pid_t pid = fork();
+    if (pid == 0) {
+        execv(full_path.c_str(), c_args.data());
+        std::cerr << "execv failed\n";
+        _exit(127);
+    } else if (pid > 0) {
+        int status;
+        waitpid(pid, &status, 0);
+    } else {
+        std::cerr << "fork failed\n";
+    }
+
+}
 
 
 int main()
