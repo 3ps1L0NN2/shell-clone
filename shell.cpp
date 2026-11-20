@@ -6,6 +6,10 @@
 bool REPL = 1;
 std::vector <std::string> BUILT_INS = {"echo", "exit", "type"};
 
+void unknown_command(std::string command){
+    std::cout << command <<" : command not found\n";
+}
+
 void type(std::string command)
 {
     auto it = std::find(BUILT_INS.begin(), BUILT_INS.end(), command.substr(5));
@@ -16,9 +20,7 @@ void type(std::string command)
         unknown_command(command.substr(5));
 }
 
-void unknown_command(std::string command){
-    std::cout << command <<" : command not found\n";
-}
+
 
 int main()
 {
@@ -35,7 +37,7 @@ int main()
         } else if (command.substr(0,5) == "type ") {
             type(command);
         } else 
-            std::cout << command <<" : command not found\n";
+            unknown_command(command);
     }
     
 
