@@ -1,0 +1,54 @@
+# --- C++ build artifacts ---
+# Executables
+shell
+*.exe
+*.out
+*.app
+
+# Object files
+*.o
+*.obj
+*.lo
+*.slo
+
+# Libraries
+*.a
+*.lib
+*.so
+*.so.*
+*.dll
+*.dylib
+
+# Debug information
+*.pdb
+*.ilk
+
+# Precompiled headers
+*.gch
+*.pch
+
+# --- Build directories ---
+build/
+build-*/
+out/
+bin/
+obj/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# --- VS Code settings ---
+# Ignore the whole folder but keep useful shared settings
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/c_cpp_properties.json
+
+# Miscellaneous
+*.log
+*.tmp
+*.bak
+*.swp
