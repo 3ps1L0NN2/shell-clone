@@ -118,7 +118,7 @@ int main()
         } else if (command.substr(0,5) == "type ") {
             type(command);
         } else 
-            unknown_command(command);
+            exec_cmd(command);
     }
     
 
