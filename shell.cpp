@@ -4,12 +4,35 @@
 #include <algorithm>
 #include <cstdlib>
 #include <unistd.h>
+#include <sys/wait.h>
 
 bool REPL = 1;
 std::vector <std::string> BUILT_INS = {"echo", "exit", "type"};
 
 void unknown_command(std::string command){
     std::cout << command <<" : command not found\n";
+}
+
+std::string find_in_path(const std::string& cmd){
+    std::string path = std::getenv("PATH");     
+    std::string dir = "";
+    
+    for(int i = 0; i <= path.size(); ++i){
+        if (i==path.size() || path[i]==':') {
+            if(!dir.empty()) {
+                std::string full_path = dir + "/" +cmd;
+                if (access(full_path.c_str(), X_OK) == 0) {
+                    return full_path;
+            }
+        }
+
+            dir = "";
+        } else {
+            dir += path[i];
+        }
+    }
+
+    return "";
 }
 
 void type(std::string command)
@@ -23,29 +46,16 @@ void type(std::string command)
         return;
     }
 
-    std::string path = std::getenv("PATH");     
-    std::string dir = "";
-    
-    for(int i = 0; i <= path.size(); ++i){
-        if (i==path.size() || path[i]==':') {
-            if(!dir.empty()) {
-                std::string full_path = dir + "/" +cmd;
-                if (access(full_path.c_str(), X_OK) == 0) {
-                    std::cout << cmd << " is " << full_path << std::endl;
-                    return;
-            }
-        }
-
-            dir = "";
-        } else {
-            dir += path[i];
-        }
+    std::string full_path = find_in_path(cmd);
+    if(!full_path.empty()){
+        std::cout << cmd << " is " << full_path << std::endl;
+        return;
     }
 
     unknown_command(cmd);
-
 }
 
+void exec_cmd()
 
 
 int main()
